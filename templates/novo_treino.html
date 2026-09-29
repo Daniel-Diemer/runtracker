@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+{% block conteudo %}
+
+<section class="card">
+    <h2>Novo treino</h2>
+    <p>Preencha os dados do treino realizado.</p>
+
+    <form method="POST">
+        <label for="data_treino">Data do treino:</label>
+        <input type="date" id="data_treino" name="data_treino">
+
+        <label for="tipo">Tipo do treino:</label>
+        <select id="tipo" name="tipo">
+            <option value="corrida">Corrida</option>
+            <option value="caminhada">Caminhada</option>
+        </select>
+
+        <label for="distancia_km">Distância em km:</label>
+        <input type="text" id="distancia_km" name="distancia_km" class="input-distancia" placeholder="Ex: 12,30" required>
+        <label for="tempo">Tempo:</label>
+        <input type="text" id="tempo" name="tempo" class="input-tempo" placeholder="Ex: 01:15:30" required >
+       
+
+        <label for="observacao">Observação:</label>
+        <textarea id="observacao" name="observacao" placeholder="Opcional: como foi o treino?"></textarea>
+
+        <button type="submit">Salvar treino</button>
+    </form>
+</section>
+
+{% endblock %}

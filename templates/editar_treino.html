@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% block conteudo %}
+
+<section class="card">
+    <h2>Editar treino</h2>
+    <p>Atualize os dados do treino selecionado.</p>
+
+    <form method="POST">
+        <label for="data_treino">Data do treino:</label>
+        <input type="date" id="data_treino" name="data_treino" value="{{ treino[2] }}">
+
+        <label for="tipo">Tipo do treino:</label>
+        <select id="tipo" name="tipo">
+            <option value="corrida" {% if treino[3] == "corrida" %}selected{% endif %}>Corrida</option>
+            <option value="caminhada" {% if treino[3] == "caminhada" %}selected{% endif %}>Caminhada</option>
+        </select>
+
+        <label for="distancia_km">Distância em km:</label>
+        <input type="text" id="distancia_km" name="distancia_km" class="input-distancia" value="{{ formatar_distancia(treino[4]) }}" placeholder="Ex: 12,30" required>
+
+        <label for="tempo">Tempo:</label>
+        <input type="text" id="tempo" name="tempo" value="{{ formatar_tempo(treino[5]) }}" placeholder="Ex:  01:15:30">
+        
+
+        <label for="observacao">Observação:</label>
+        <textarea id="observacao" name="observacao" placeholder="Opcional: como foi o treino?">{{ treino[6] or "" }}</textarea>
+
+        <button type="submit">Atualizar treino</button>
+    </form>
+</section>
+
+{% endblock %}

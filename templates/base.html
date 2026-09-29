@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <title>RUNTRACKER</title>
+</head>
+
+<body>
+
+    <header class="header">
+        <div class="brand">
+            <h1 class="logo">
+                <span class="logo-primary">RUN</span>
+                <span class="logo-secondary">TRACKER</span>
+            </h1>
+            <p class="tagline">Registre, acompanhe e evolua em cada treino.</p>
+        </div>
+
+        <nav class="navbar">
+            {% if "usuario_id" in session %}
+                <a class="nav-link" href="{{ url_for('dashboard') }}">Dashboard</a>
+                <a class="nav-link nav-primary" href="{{ url_for('novo_treino') }}">+ Novo treino</a>
+                <a class="nav-link" href="{{ url_for('historico') }}">Histórico</a>
+                <a class="nav-link nav-danger" href="{{ url_for('logout') }}">Sair</a>
+            {% else %}
+                <a class="nav-link" href="{{ url_for('login') }}">Login</a>
+                <a class="nav-link nav-primary" href="{{ url_for('cadastro') }}">Cadastro</a>
+            {% endif %}
+        </nav>
+    </header>
+
+    {% with mensagens = get_flashed_messages(with_categories=true) %}
+        {% if mensagens %}
+            <div class="flash-messages">
+                {% for categoria, mensagem in mensagens %}
+                    <p class="flash-message flash-{{ categoria }}">{{ mensagem }}</p>
+                {% endfor %}
+            </div>
+        {% endif %}
+    {% endwith %}
+
+    <main class="container">
+        {% block conteudo %}
+        {% endblock %}
+    </main>
+
+    <script>
+    setTimeout(function () {
+        const flashMessages = document.querySelector(".flash-messages");
+
+        if (flashMessages) {
+            flashMessages.style.opacity = "0";
+
+            setTimeout(function () {
+                flashMessages.style.display = "none";
+            }, 500);
+        }
+    }, 5000);
+</script>
+<script>
+    function aplicarMascaraDistancia(campo) {
+        campo.addEventListener("input", function () {
+            let valor = campo.value.replace(/\D/g, "");
+
+            if (valor === "") {
+                campo.value = "";
+                return;
+            }
+
+            valor = (parseInt(valor, 10) / 100).toFixed(2);
+            valor = valor.replace(".", ",");
+
+            campo.value = valor;
+        });
+    }
+
+    document.querySelectorAll(".input-distancia").forEach(aplicarMascaraDistancia);
+</script>
+<script>
+    function aplicarMascaraTempo(campo) {
+        campo.addEventListener("input", function () {
+            let valor = campo.value.replace(/\D/g, "");
+
+            if (valor === "") {
+                campo.value = "";
+                return;
+            }
+
+            valor = valor.padStart(6, "0");
+
+            let horas = valor.slice(0, -4);
+            let minutos = valor.slice(-4, -2);
+            let segundos = valor.slice(-2);
+
+            if (horas.length > 2) {
+                horas = horas.slice(-2);
+            }
+
+            campo.value = `${horas}:${minutos}:${segundos}`;
+        });
+    }
+
+    document.querySelectorAll(".input-tempo").forEach(aplicarMascaraTempo);
+</script>
+
+</body>
+
+</html>

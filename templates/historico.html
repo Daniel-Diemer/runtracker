@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+{% block conteudo %}
+
+<section class="card history-card">
+    <h2>Histórico de treinos</h2>
+    <p>Veja todos os treinos que você já registrou.</p>
+
+    {% if treinos %}
+        {% for treino in treinos %}
+            <div class="history-item">
+                <p><strong>Data:</strong> {{ formatar_data(treino[2]) }}</p>
+                <p><strong>Tipo:</strong> {{ treino[3]|capitalize }}</p>
+                <p><strong>Distância:</strong> {{ formatar_distancia(treino[4]) }} km</p>
+                <p><strong>Tempo:</strong> {{ formatar_tempo(treino[5]) }}</p>
+                <p><strong>Pace:</strong> {{ calcular_pace(treino[5], treino[4]) }}/km</p>
+                <p><strong>Observação:</strong> {{ treino[6] or "Sem observação" }}</p>
+
+                <div class="actions">
+                    <a class="btn-link" href="{{ url_for('editar_treino', treino_id=treino[0]) }}">Editar</a>
+
+                    <form action="{{ url_for('excluir_treino', treino_id=treino[0]) }}" method="POST">
+                        <button class="btn-danger" onclick="return confirm('Deseja realmente excluir este treino?')" type="submit">
+                            Excluir
+                        </button>
+                    </form>
+                </div>
+            </div>
+        {% endfor %}
+    {% else %}
+        <p>Nenhum treino registrado ainda.</p>
+        <a class="btn-link" href="{{ url_for('novo_treino') }}">Registrar primeiro treino</a>
+    {% endif %}
+</section>
+
+{% endblock %}

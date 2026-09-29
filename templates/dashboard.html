@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+
+{% block conteudo %}
+
+<section class="card dashboard-card">
+    <h2>Olá, {{ nome_usuario }}</h2>
+    <p>Veja o resumo dos seus treinos.</p>
+
+    {% if total_treinos == 0 %}
+        <div class="empty-state">
+            <h3>Você ainda não registrou nenhum treino.</h3>
+            <p>Comece adicionando seu primeiro treino para acompanhar sua evolução.</p>
+
+            <a class="btn-main" href="{{ url_for('novo_treino') }}">
+                + Registrar primeiro treino
+            </a>
+        </div>
+    {% else %}
+        <div class="metric-grid">
+            <div class="metric-card">
+                <span class="metric-label">Total de treinos</span>
+                <span class="metric-value">{{ total_treinos }}</span>
+            </div>
+
+            <div class="metric-card">
+                <span class="metric-label">Distância total</span>
+                <span class="metric-value">{{ total_km }} km</span>
+            </div>
+
+            <div class="metric-card">
+                <span class="metric-label">Tempo total</span>
+                <span class="metric-value">{{ tempo_total }}</span>
+            </div>
+
+            <div class="metric-card">
+                <span class="metric-label">Pace médio</span>
+                <span class="metric-value">{{ pace_medio }}</span>
+            </div>
+        </div>
+    {% endif %}
+</section>
+
+{% endblock %}
